@@ -55,7 +55,6 @@ body {
 		  
 		   <div class="clear"> </div>
 		</form>
-		<!-----//end-main---->
 	
 		
 			
