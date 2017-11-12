@@ -13,9 +13,9 @@
 		$description =$_POST['description'];
 		$postID =$_POST['postId'];
 		$date1 = new DateTime();
-		$date1 = $date1->format("Y-m-d");
+		$date1 = $date1->format('Y-m-d H:i:s');
 		if (!empty($description)) {
-			$st = "INSERT INTO comments(datePublished, description, userId, postId) VALUES (:date, :description, :user, :postID);";
+			$st = "INSERT INTO comments(datePublished, description, upVote, downVote, userId, postId) VALUES (:date, :description, 0, 0, :user, :postID);";
 			$pt = $MySQLi_CON -> prepare($st);
 			$rt = $pt -> execute(array(
 				":date" => $date1,
@@ -23,16 +23,9 @@
 				":user" => $id,
 				":postID" => $postID
 			));
-			$lastId = $MySQLi_CON ->lastInsertId();
 
 			if($rt){	
-				$stmt = "INSERT INTO links (user_ID, post_ID, reply_ID) VALUES (:user, :postID,:replyID);";
-				$p = $MySQLi_CON -> prepare($stmt);
-				$results = $p -> execute(array(
-					":user" => $id,
-					":postID" => $postID,
-					":replyID" => $lastId
-				));
+
 				echo '<script language = "javascript">';
 				echo 'alert("Commented successfully")';
 				echo '</script>';
