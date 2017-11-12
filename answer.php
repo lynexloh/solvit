@@ -1,6 +1,6 @@
 <?php 
-	$tag = "Reply";
-	include("head1.php");		
+	$tag = "Post Detail";
+	include("head.php");		
 	include_once 'connection.php';
 	$id = $_SESSION['userId'];
 	$db_handle = new DBController();	
@@ -29,17 +29,9 @@
 	while ($userRow = mysqli_fetch_assoc($userResult)){
 		$userName = $userRow['userName'];
 	}
-	
-	//$queries = "SELECT repairMethodRequested FROM posts WHERE postId like $post";
-	//$data8 = $db_handle->runQuery($queries);
-	//$keys = mysqli_fetch_assoc($data8);
-	//$method= $keys['repairMethodRequested'];
-	
-	//$query2 = "SELECT repairMethodRequested FROM posts WHERE postId like $post";
-	//$data2 = $db_handle->runQuery($query2);
-	//foreach ($data2 as $key2 ) {
-	//	$method2= $key2['repairMethodRequested'];
-	//}
+	if ($_SESSION['userType'] == 'Technician'){
+		$checkSentOffer = "SELECT * FROM offers WHERE technicianId = $id AND postId = $post";
+	}
 ?>
 
 <style>
@@ -178,8 +170,8 @@ $(function() {
 			<?php echo $topic ?>
 		</h1>
 		<ol class="breadcrumb">
-			<li><a href="member_panel"><i class="fa fa-dashboard"></i> Home</a></li>
-			<li><a href="member_panel">Posts</a></li>
+			<li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="solvit2.php">Posts</a></li>
 			<li class="active"><?php echo $topic?></li>
 		</ol>
     </section>
@@ -205,13 +197,11 @@ $(function() {
 												?>
 												<br/>
 												<strong>Posted By: </strong>
-												<a href="#">
 													<?php 
 														echo $userName;
 													?>
-												</a>
 												<br/>
-												<strong>Description: </strong>
+												<strong>Description: </strong><br/>
 												<?php 
 													echo $description
 												?>
@@ -225,30 +215,21 @@ $(function() {
 											</td>
 											<!-- accept button starts here -->
 											<td>        
-												<?php
-													if ($id != $writer && $type == 'Technician' && $method != 'Offsite'){
-												?>
-												<form method="post" action="book.php">  
-													<input name = "postID" type = "hidden" value="<?php echo $post; ?>">
-													<input name = "userID" type = "hidden" value="<?php echo $id; ?>">
-													<input name = "writerID" type = "hidden" value="<?php echo $writer; ?>">
-													<input name = "method" type = "hidden" value="<?php echo $method; ?>">
-													<input name = "type" type = "hidden" value="<?php echo $type1; ?>">
-													<input name = "topic" type = "hidden" value="<?php echo $topic; ?>">
-													<input name = "problem" type = "hidden" value="<?php echo $problem; ?>">
-													<input name = "name" type = "hidden" value="<?php echo $name; ?>">
-													<button type="submit" name="accept"  class="[ btn btn-primary active ]" data-loading-text="Loading..." >Send Offer</button>
-												</form>
-												<?php	
-													}
-													else{
-												?>
-												<a href="#">
-													<button type="submit" class="[ btn btn-primary disabled]" data-loading-text="Loading..." disabled>Send Offer</button>
-												</a>
-												<?php
-													}
-												?>
+											<?php
+												$checkSentOffer = "SELECT * FROM offers WHERE technicianId = $id AND postId = $post";
+												$checkSentOfferResult = $db_handle->runQuery($checkSentOffer);
+												$numOfResult = mysqli_num_rows($checkSentOfferResult);
+												if ($id != $writer && $type == 'Technician' && $method != 'Offsite' && $numOfResult == 0){
+											?>
+												<button name="accept" class="[ btn btn-primary active ]" data-loading-text="Loading..." data-toggle="modal" data-target="#squarespaceModal">Send Offer</button>
+											<?php	
+												}
+												else if ($id != $writer && $type == 'Technician' && $method != 'Offsite' && $numOfResult != 0){
+											?>
+												<button name="accept" class="[ btn btn-primary active ]" data-loading-text="Loading..." data-toggle="modal" data-target="#squarespaceModal" disabled>Send Offer</button>
+											<?php	
+												}
+											?>
 											</td>
 										</tr>
 										<tr>
@@ -257,12 +238,15 @@ $(function() {
 											</th>
 											<td>
 												<div>
-													<img src="imageUploaded/<?php echo $image;?>" height="100" width="100" alt = "No image was uploaded">
+													<a href="imageUploaded/<?php echo $image;?>" target="_blank">
+														<img src="imageUploaded/<?php echo $image;?>" height="100" width="100" alt = "No image was uploaded">
+													</a>
 												</div>
 											</td>
 										</tr>   
 									</tbody>
 								</table>
+					<!--Show comment list start-->
 								<div class="panel panel-default widget">
 									<div class="panel-heading">
 										<span class="glyphicon glyphicon-comment">  COMMENTS</span>
@@ -281,75 +265,33 @@ $(function() {
 											?>
 											<li class="list-group-item">
 												<div class="row">
-													<!-- xs means phone md means desktop-->
-													<div class="col-xs-3 col-md-1">
-														<div class="examples" id="examples"></div>
-														<div id="links-<?php echo $keylog["id"]; ?>">
-															<input type="hidden" id="votes-<?php echo $keylog["id"]; ?>" value="<?php echo $keylog["votes"]; ?>">
-															<?php
-																$us = $keylog["user_ID"];
-																$vote_rank = 0;
-																$query ="SELECT SUM(vote_rank) as vote_rank FROM ipaddress_vote_map WHERE link_id = '" . $keylog["id"] . "' and ip_address = '" . $ip_address . "'";
-																$row = $db_handle->runQuery($query);
-																if($id == $us){
-																	$up = "disabled";
-																	$down = "disabled";	
-																}
-																else{
-																	$up = "";
-																	$down = "";
-																}
-																//if login id is same as the reply id
-																if(!empty($row[0]["vote_rank"])) {
-																	$vote_rank = $row[0]["vote_rank"];
-																	if($vote_rank == -1) {
-																		$up = "disabled";
-																		$down = "disabled";
-																	}
-																	if($vote_rank == 1) {
-																		$up = "disabled";
-																		$down = "disabled";
-																	}
-																}
-															?>
-															<input type="hidden" id="vote_rank_status-<?php echo $keylog["id"]; ?>" value="<?php echo $vote_rank; ?>">
-															<div class="btn-votes">
-																<input type="button" title="Up" class="up" onClick="addVote(<?php echo $keylog["id"]; ?>,'1')" <?php echo $up; ?> />
-																<div class="label-votes"><?php echo $keylog["votes"]; ?></div>
-																<input type="button" title="Down" class="down" onClick="addVote(<?php echo $keylog["id"]; ?>,'-1')" <?php echo $down; ?> />
-															</div>
-														</div>
-													</div>
+													
 													<!--description here -->
 													</br>
-													<div class="col-xs-6 col-md-1">
+													<div class="col-xs-3 col-md-1">
 														<img src="dist/img/user2-160x160.jpg" class="img-circle img-responsive" alt="" />
 													</div>
-													<div class="col-xs-12 col-md-3">
+													<div class="col-xs-9 col-md-11">
 														<div>
 															<div class="comment-text">
 																<h4>
 																	<?php 
-																		$ids = $keylog["reply_ID"];
-																		$number1 = "SELECT * FROM comments where id = $ids";
-																		$number2 = $db_handle->runQuery($number1);
-																		foreach ($number2 as $key4 ) {
-																			echo $key4['description'];			 
-																		}	
+																		echo $keylog['description'];
 																	?>
 																</h4>
-															</div>    
+															</div>
+															<br/>
 															<div class="mic-info">
-																By: <a href="expert.php">
+																By: 
 																<?php 
 																	$ID = $keylog['userId'];
 																	$query = "SELECT * FROM users where userId = $ID";
 																	$data = $db_handle->runQuery($query);
 																	foreach ($data as $key1 ) {
-																		echo $key1['userName'];			 
+																		echo "<b>".$key1['userName']."</b>";			 
 																	}
 																?>
-																</a> on <?php echo $key4['date'];?>
+																 on <?php echo $keylog['datePublished'];?>
 															</div>
 														</div>
 													</div>
@@ -370,15 +312,16 @@ $(function() {
 										</ul>
 									</div>
 								</div>
+				<!--Show comment list end-->
 								<div class="col">
 									<div class="panel-body">
 										<form method="post" role="form" action="reply.php">  
 											<fieldset>
 												<div class="form-group">
-													<input name = "postID" type = "hidden" value="<?php echo $post; ?>">
-													<textarea name="reply" class="form-control" rows="3" placeholder="Comment" required autofocus=""></textarea>
+													<input name = "postId" type = "hidden" value="<?php echo $post; ?>">
+													<textarea name="description" class="form-control" rows="3" placeholder="Comment" required autofocus=""></textarea>
 												</div>           
-												<button name="post" type="submit" class="[ btn btn-success ]" data-loading-text="Loading...">Post reply</button>
+												<button name="post" type="submit" class="[ btn btn-success ]" data-loading-text="Loading...">Post Comment</button>
 											</fieldset>
 										</form>
 									</div>
@@ -404,6 +347,52 @@ $(function() {
 		<!-- Default to the left -->
 		<strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
 	</footer>
+	
+	<form method="post" action="book.php">
+		<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title" id="lineModalLabel">Offer Price</h3>
+					</div>
+					<div class="modal-body">
+						<!-- content goes here -->
+						<div class="form-group">
+							<label for="exampleInputEmail1">Post Title</label>
+							<input type="text" class="form-control" id="exampleInputEmail1" placeholder="<?php echo $topic;?>" disabled />
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Client Name</label>
+							<input type="text" class="form-control" id="exampleInputEmail1" placeholder="<?php echo $userName;?>" disabled />
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">Price Offered</label>
+							<input type="text" name ="price" class="form-control" id="exampleInputEmail1" placeholder="Enter the service amount" required />
+						</div>
+						<input name = "postId" type = "hidden" value="<?php echo $post; ?>">
+						<input name = "technicianId" type = "hidden" value="<?php echo $id; ?>">
+						<input name = "writerId" type = "hidden" value="<?php echo $writer; ?>">
+						<input name = "postTitle" type = "hidden" value="<?php echo $topic; ?>">
+						<input name = "clientName" type = "hidden" value="<?php echo $userName; ?>">
+					</div>
+					<div class="modal-footer">
+						<div class="btn-group btn-group-justified" role="group" aria-label="group button">
+							<div class="btn-group" role="group">
+								<button  type="submit" name="submit" class="btn btn-default btn-hover-green">Send</button>
+							</div>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+							</div>
+							<div class="btn-group btn-delete hidden" role="group">
+								<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 
 
 <!--
