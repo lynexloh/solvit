@@ -1,7 +1,7 @@
 <?php 
 	$solve= "active";
 	$solvit2 ="active";
-	$tag = "My Questions";  
+	$tag = "Posts";  
   include("head.php");
   
   $query = "SELECT * FROM posts";
@@ -14,11 +14,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
 		<h1>
-			Question
+			Posts
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href="member_panel"><i class="fa fa-dashboard"></i> Home</a></li>
-			<li class="active">Order Viewer</li>
+			<li class="active">Posts</li>
 		</ol>
     </section>
 
@@ -31,11 +31,19 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						<section class="content">
+						<?php
+							if ($_SESSION['userType'] == 'User'){
+						?>
 							<a href="post.php">
 								<button type="button" class="btn btn-danger btn-lg btn3d">
 									<span class="glyphicon glyphicon-question-sign"></span> Post A Problem
 								</button>
 							</a>
+						<?php
+							}
+							
+						?>
+							
 							</br></br>
 							<table class="table">
                   <?php 
@@ -54,22 +62,29 @@
                       </h2>
                     </td>
                     <td rowspan="2"> 
-											<strong>Date</strong>
-											<br/><?php echo $key['datePublished'];?>
-                      <br/><?php 
-                          $ID = $key['userId'];
-                          $findUserQuery = "SELECT * FROM users where userId = $ID";
-                          $findUserResult = $MySQLi_CON->query($findUserQuery);
-													foreach ($findUserResult as $keys ) {
-														echo $keys['userName'];			 
-													}
-													?>
-										</td>
-                  </tr>
+						<strong>Date</strong>
+						<br/>
+						<?php echo $key['datePublished'];?>
+						<br/>
+						<br/>
+						<strong>Posted By:</strong>
+						<br/>
+						<?php 
+							$ID = $key['userId'];
+							$findUserQuery = "SELECT * FROM users where userId = $ID";
+							$findUserResult = $MySQLi_CON->query($findUserQuery);
+							foreach ($findUserResult as $keys ) {
+								echo $keys['userName'];
+							}
+						?>
+						
+						
+					</td>
+						</tr>
 									<tr class="active" style="border: 2px solid #ddd">
 										<td>
 											<div>
-												<a>
+												<a href="imageUploaded/<?php echo $key['image'];?>" target="_blank">
 													<img src="imageUploaded/<?php echo $key['image'];?>" height="100" width="100" alt = "No image was uploaded"> 
 												</a>
 											</div>
@@ -79,7 +94,6 @@
 											<br/>Brand / Model: <?php echo $key['itemModal'];?>
 											<br/>Problem: <?php echo $key['problemType'];?>
 											<br/>Method: <?php echo $key['repairMethodRequested'];?>
-											<br/>Description: <?php echo $key['problemDescription'];?> 
 										</td>
 									</tr>
                   <tr style="border-top: 2px solid #ddd;border-bottom: 2px solid #ddd"><td colspan="3"><br/></td></tr>
