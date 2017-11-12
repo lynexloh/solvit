@@ -37,181 +37,116 @@
 			}
 </style>
 
-<!-- Left side column. contains the logo and sidebar -->
-<aside class="main-sidebar">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Post
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="member_panel"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Post Form</li>
+		</ol>
+	</section>
 
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
-    <!-- Sidebar user panel (optional) -->
-    <div class="user-panel">
-        <div class="pull-left image">
-			<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-			<p><?php echo $name?></p>
-			<a href="#"><i class="fa fa-circle text-success"></i> <?php echo $status?></a>
-        </div>
-    </div>
-	<!-- search form (Optional) -->
-	<form action="#" method="get" class="sidebar-form">
-		<div class="input-group">
-			<input type="text" name="q" class="form-control" placeholder="Search For User">
-			<span class="input-group-btn">
-				<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-				</button>
-			</span>
-		</div>
-	</form>
-    <!-- /.search form -->
-
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">Navigation</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-  			<li>
-          <a href="order.php">
-            <i class="fa fa-shopping-cart"></i> <span>Offer</span>
-          </a>
-        </li>
-        <li class ="<?php echo "$solve";?>">
-			<a href="solvit2.php"><i class="fa fa-link"></i> <span>Posts</span></a>
-		</li>
-      </ul>
-      <!-- /.sidebar-menu -->
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Post
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="member_panel"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Order Viewer</li>
-      </ol>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <!-- Main row (Stat box) -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            
-            <!-- /.box-header -->
-            <div class="box-body">
-     
-			  <section class="content">
-			  
-			<form method="post" action="postAnswer.php" enctype ="multipart/form-data">
-                    <input type='hidden' name='csrfmiddlewaretoken' value='XFe2rTYl9WOpV8U6X5CfbIuOZOELJ97S' />
-                            
-
-                        <div id="div_id_username" class="form-group required">
-                            <label for="id_username" class="control-label col-md-4  requiredField"> Title:<span class="asteriskField"></span> </label>
-                            <div class="controls col-md-8 ">
-                                <input class="input-md  textinput textInput form-control" id="id_username" maxlength="30" name="title" placeholder="Title" style="margin-bottom: 10px" type="text" />
-                            </div>
-                        </div>
-                       <div id="div_id_name" class="form-group required">
-                             <label for="id_name" class="control-label col-md-4  requiredField"> Product Type:<span class="asteriskField"></span> </label>
-                             <div class="controls col-md-8 ">
-							  <select name="type" class="selectpicker" data-size="5" style="display: none;">
-							  <option value="Computer">Computer</option>
-							  <option value="Mobile">Mobile</option>
-							  <option value="Other">Others</option>
-						  </select>
-						  	  
-                            </div>
-                        </div>
-						
-						</br></br></br>
-                        <div id="div_id_password1" class="form-group required">
-                            <label for="id_password1" class="control-label col-md-4  requiredField"> Brand / Modal:<span class="asteriskField"></span> </label>
-                            <div class="controls col-md-8 "> 
-                                <input class="input-md textinput textInput form-control" id="id_password1" name="modal" placeholder="Brand / Modal" style="margin-bottom: 10px" type="text" />
-                            </div>
-                        </div>
-                        <div id="div_id_password2" class="form-group required">
-                             <label for="id_password2" class="control-label col-md-4  requiredField"> Problem:<span class="asteriskField"></span> </label>
-                             <div class="controls col-md-8 ">
-							  <select name="problem" class="selectpicker" data-size="5" style="display: none;">
-							  <option value="Hardware">Hardware</option>
-							  <option value="Software">Software</option>
-							 
-						  </select>
-						  	  
-                            </div>
-                        </div>
-				
-                        <div id="div_id_name" class="form-group required"> 
-                            <label for="id_name" class="control-label col-md-4  requiredField"> Repair Method:<span class="asteriskField"></span> </label> 
-                            <div class="controls col-md-8 "> 
-								 <select name ="method" class="selectpicker" data-size="5" style="display: none;">
-							  <option value="Onsite">Onsite Support</option>
-							  <option value="Offsite">Offsite Support</option>
-							 
-						  </select>
-                            </div>
-                        </div>
-						
-                       <div id="div_id_name" class="form-group required"> 
-							 <div style="margin-top:20px" class="controls col-md-offset-4 col-md-12">
-							 
-							  <label for="id_name" requiredField"> Further description on the problem:<span class="asteriskField"></span> </label> 
-								
-							 </div>
-					   
-                            <div class="col-lg-12">
-								 <div class="well well-lg">
-									  <div class="media1">													
-												   <div class="form-group" style="padding:12px;">
-													<textarea name ="description" class="form-control animated" placeholder="Maximum length is 256 words"></textarea>
-												  
-												   </div>
-											   
-								
-										</div>
-								</div>  <!-- well-sm -->
-							</div>
-                        </div>
-                      <div id="div_id_name" class="form-group required"> 
-                            <label for="id_name" class="control-label col-md-4  requiredField"> Attach image:<span class="asteriskField"></span> </label> 
-                          <div class="controls col-md-8 ">
-						  <!-- image-preview-filename input [CUT FROM HERE]-->
-							<div class="input-group image-preview">
-								<input type="text" class="form-control image-preview-filename" disabled="disabled"> <!-- don't give a name === doesn't send on POST/GET -->
-								<span class="input-group-btn">
-									<!-- image-preview-clear button -->
-									<button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-										<span class="glyphicon glyphicon-remove"></span> Clear
-									</button>
-									<!-- image-preview-input -->
-									<div class="btn btn-default image-preview-input">
-										<span class="glyphicon glyphicon-folder-open"></span>
-										<span class="image-preview-input-title">Browse</span>
-										<input type="file" name="file" id="fileToUpload" size="40"/> <!-- rename it -->
+	<!-- Main content -->
+	<section class="content">
+		<!-- Main row (Stat box) -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<!-- /.box-header -->
+					<div class="box-body">
+			  		<section class="content">
+							<form method="post" action="postAnswer.php" enctype ="multipart/form-data">
+							
+								<input type='hidden' name='csrfmiddlewaretoken' value='XFe2rTYl9WOpV8U6X5CfbIuOZOELJ97S' />
+								<div id="div_id_username" class="form-group required">
+									<label for="id_username" class="control-label col-md-4  requiredField"> Title:<span class="asteriskField"></span> </label>
+									<div class="controls col-md-8 ">
+										<input class="input-md  textinput textInput form-control" id="id_username" maxlength="50" name="title" placeholder="Title" style="margin-bottom: 10px" type="text" required/>
 									</div>
-								</span>
-							</div><!-- /input-group image-preview [TO HERE]--> 				  
-						  </div>
-                        </div>	
+								</div>
+								<div id="div_id_name" class="form-group required">
+									<label for="id_name" class="control-label col-md-4  requiredField"> Product Type:<span class="asteriskField"></span> </label>
+                  <div class="controls col-md-8 ">
+										<select name="type" class="selectpicker" data-size="5" style="display: none;">
+											<option value="Computer">Computer</option>
+											<option value="Mobile">Mobile</option>
+											<option value="Other">Others</option>
+										</select>
+						  	  </div>
+                </div>
+								</br></br></br>
+								<div id="div_id_password1" class="form-group required">
+									<label for="id_password1" class="control-label col-md-4  requiredField"> Brand / Modal:<span class="asteriskField"></span> </label>
+									<div class="controls col-md-8 "> 
+											<input class="input-md textinput textInput form-control" id="id_password1" name="modal" placeholder="Brand / Modal" style="margin-bottom: 10px" type="text" required/>
+									</div>
+								</div>
+								<div id="div_id_password2" class="form-group required">
+									<label for="id_password2" class="control-label col-md-4  requiredField"> Problem:<span class="asteriskField"></span> </label>
+									<div class="controls col-md-8 ">
+										<select name="problem" class="selectpicker" data-size="5" style="display: none;">
+											<option value="Hardware">Hardware</option>
+											<option value="Software">Software</option>
+										</select>
+						  		</div>
+              	</div>
+								<div id="div_id_name" class="form-group required"> 
+									<label for="id_name" class="control-label col-md-4  requiredField"> Repair Method:<span class="asteriskField"></span> </label> 
+									<div class="controls col-md-8 "> 
+								 		<select name ="method" class="selectpicker" data-size="5" style="display: none;">
+											<option value="Onsite">Onsite Support</option>
+											<option value="Offsite">Offsite Support</option>
+						  			</select>
+                   </div>
+                </div>
+                <div id="div_id_name" class="form-group required"> 
+							 		<div style="margin-top:20px" class="controls col-md-12">
+							  		<label for="id_name" class="requiredField"> Further description on the problem:
+											<span class="asteriskField"></span> </label> 
+									</div>
+                  <div class="col-lg-12">
+								 		<div class="well well-lg">
+									  	<div class="media1">													
+												<div class="form-group" style="padding:12px;">
+													<textarea name ="description" class="form-control animated" placeholder="Maximum length is 256 words" required></textarea>
+												</div>
+											</div>
+										</div>  <!-- well-sm -->
+									</div>
+                </div>
+                <div id="div_id_name" class="form-group required"> 
+                  <label for="id_name" class="control-label col-md-2  requiredField"> Attach image:<span class="asteriskField"></span> </label> 
+                  <div class="controls col-md-10 ">
+										<!-- image-preview-filename input [CUT FROM HERE]-->
+										<div class="input-group image-preview">
+											<input type="text" class="form-control image-preview-filename" disabled="disabled"> <!-- don't give a name === doesn't send on POST/GET -->
+											<span class="input-group-btn">
+												<!-- image-preview-clear button -->
+												<button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+													<span class="glyphicon glyphicon-remove"></span> Clear
+												</button>
+												<!-- image-preview-input -->
+												<div class="btn btn-default image-preview-input">
+													<span class="glyphicon glyphicon-folder-open"></span>
+													<span class="image-preview-input-title">Browse</span>
+													<input type="file" name="file" id="fileToUpload" size="40"/> <!-- rename it -->
+												</div>
+											</span>
+										</div><!-- /input-group image-preview [TO HERE]--> 				  
+						  		</div>
+          			</div>	
 					 
-                            <div style="padding-top:10px" class="controls col-md-12">
-                                <input type="submit" name="post" value="Post" class="btn btn-primary btn btn-info"/>
-								<input type="button" name="back" onclick="location.href='solvit.php';" style="float:right" value="Back" class="btn btn btn-danger" id="button-id-signup" />
-                            </div>							
+								<div style="padding-top:10px" class="controls col-md-12">
+									<input type="submit" name="post" value="Post" class="btn btn-primary btn btn-info"/>
+									<input type="button" name="back" onclick="location.href='solvit2.php';" style="float:right" value="Back" class="btn btn btn-danger" id="button-id-signup" />
+								</div>							
               
-                </form>
-				
-    </section>
-	
+              </form>				
+    				</section>
             <!-- /.box-body -->
           </div>
           </br></br></br></br></br>
@@ -220,10 +155,8 @@
 		
         <!-- /.col -->
       </div>
-	  
       <!-- /main .row -->
     </section>
-	
     <!-- /.content -->
     <div class="clearfix"></div>
   </div>
