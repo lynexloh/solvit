@@ -1,27 +1,16 @@
 <?php 
-  
-  $order ="active";
-  $tag = "Order";
-  
-  
-  include("head.php");
-  
-  
-					$query = "SELECT * FROM product";
-
-                     $data = $MySQLi_CON->query($query);
-
-                     foreach ($data as $datas ) {
-						
-						$expert = $datas['expert_ID'];
-						$user = $datas['user_ID'];
-					 }
-  
-  
-  
-  
-  
-  ?>
+	$order ="active";
+	$tag = "Offers";
+	include("head.php");
+	$loggedInUserId = $_SESSION['userId'];
+	$loggedInUserType = $_SESSION['userType'];
+	if ($loggedInUserType == "User"){
+		$offerQuery = "SELECT * FROM offers WHERE clientId LIKE $loggedInUserId AND offerStatus NOT LIKE 'Declined' AND repairStatus NOT LIKE 'Completed'";
+	}
+	else{
+		$offerQuery = "SELECT * FROM offers WHERE technicianId LIKE $loggedInUserId AND repairStatus NOT LIKE 'Completed'";
+	}
+?>
   <!-- Left side column. contains the logo and sidebar -->
  <style type="text/css">
         .center {
@@ -54,11 +43,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Order
+        Offers
       </h1>
       <ol class="breadcrumb">
-        <li><a href="starter.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Order Viewer</li>
+        <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Offers Viewer</li>
       </ol>
     </section>
 
@@ -70,272 +59,239 @@
           <div class="box">
             
             <!-- /.box-header -->
-            <div class="box-body">
-                <ul class="nav nav-pills">
-  <li class="active"><a data-toggle="pill" href="#thistory">Status</a></li>
-  <li><a data-toggle="pill" href="#tacc">History</a></li>
-</ul>
-			<div class="tab-content">
-              <div id="thistory" class="tab-pane fade in active">
-			  
-			  
-		<?php
-if ($id==$expert && $type == 'Technician'){
-
-		?>
-  <table id="token_table" class="table table-bordered table-striped display" cellspacing="0" width="100%">
-                <br>
-                <thead>
-                <tr>
-		  <th> Date </th>
-		   <th> Type </th>
-		   <th> Name </th>
-		   
-		    <th> Problem </th>
-	
-		  <th>	Client </th>
-		   <th>	Method </th>
-		 
-		   <th>	Payment </th>
-  <th>	Status </th>
-
-		</tr>
-		<tbody>
-		
-		          <?php 
-                     //Fetch all the data from the package.
-                     $query = "SELECT * FROM product where expert_ID like $id";
-
-                     $data = $MySQLi_CON->query($query);
-
-                     foreach ($data as $key ) {
-
-                   ?>
-                <tr>
-				  <td><?php echo $key['date'];?></td> 
-                  <td><?php echo $key['type'];?></td>
-				    <td><?php echo $key['name'];?></td>
-                
-				   <td><?php echo $key['problem'];?></td> 
-				   		<td><?php 
-						$userID = $key['user_ID'];
-						$query1 = "SELECT * FROM user where user_ID like $userID";
-						
-						 $userData = $MySQLi_CON->query($query1);
-
-                     foreach ($userData as $userKey ) {
-						 echo $userKey['user_Name'];	 
-					 }
-						
-						?>
-						
-						
-						
-						</td>
-
-		
-				<td><?php echo $key['method'];?></td>
-					
-					
-					<?php if ($key['payment'] == 0){
-						
-					
-					
+			<div class="box-body">
+				<ul class="nav nav-pills">
+					<li class="active"><a data-toggle="pill" href="#thistory">Status</a></li>
+					<li><a data-toggle="pill" href="#tacc">History</a></li>
+				</ul>
+				<div class="tab-content">
+					<?php
+						if ($loggedInUserType == 'Technician'){
 					?>
-					
-
-					 <td class="text-center"><button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-piggy-bank"></span> Set Amount</button></td>
-					 
-					
-					 <?php
-						 }
-						 else{
-							  ?>
-							 
-							  <td><?php echo $key['payment'];?>  </td>
-							  <?php
-						 }
-				 ?>
-					
-                 
-				  
-				  
-				  
-			<td><?php echo $key['status'];?></td>	
-                </tr>
-                <?php
-                  }
-                  ?>
-           
-	      
-		</tbody>
-                <tfoot>
-                </tfoot>
-              </table>
-			  <?php
-}
-
-
-else{
-	?>
-	  <table id="token_table" class="table table-bordered table-striped display" cellspacing="0" width="100%">
-                <br>
-                <thead>
-                <tr>
-		  <th> Date </th>
-		   <th> Type </th>
-		   <th> Name </th>
-		   
-		    <th> Problem </th>
-			  <th>	Technician </th>
-
-		  <th>	Support </th>
-		 
-		   <th>	Payment </th>
-  <th>	Status </th>
-<th>	Action </th>
-	
-		</tr>
-		<tbody>
-		
-		          <?php 
-                     //Fetch all the data from the package.
-                     $query = "SELECT * FROM product where user_ID like $id";
-
-                     $data = $MySQLi_CON->query($query);
-
-                     foreach ($data as $key ) {
-
-                   ?>
-                <tr>
-				  <td><?php echo $key['date'];?></td> 
-                  <td><?php echo $key['type'];?></td>
-				    <td><?php echo $key['name'];?></td>
-                
-				   <td><?php echo $key['problem'];?></td> 
-				   		<td>		
-						<?php $expertise = $key['expert_ID'];
-						
-						 $quer = "SELECT * FROM user where user_ID like $expertise";
-
-                     $da = $MySQLi_CON->query($quer);
-
-                     foreach ($da as $ke ) {
-							echo $ke['user_Name'];
-							 }
-						?>
-						</td>
-
-		
-				<td><?php echo $key['method'];?></td>
-					
-                  <td><?php echo $key['payment'];?>
-				  
-				  
-				  </td>
-			<td><?php echo $key['status'];?></td>	
-				<form method="post" action="cancel.php">  
-	 <?php $orderID = $key['order_ID']; 
-				  ?>  
-		                 <td class="text-center">
-						 
-						 <?php 
-						 if($key['payment'] != 0 &&  $key['confirm'] == 'Yes' && $key['status'] != 'Paid' )
-						 {
-						 ?>	
-						 <a class='btn btn-info btn-xs' href="paypal.php?id=<?php echo $orderID ?>"><span class="glyphicon glyphicon-piggy-bank"></span> Pay</a> 
-						 
-						<?php
-						  }
-						 else if($key['payment'] == 0 && $key['confirm'] == 'No' && $key['status'] != 'Paid'){
-							 ?>
-							<a class='btn btn-info btn-xs' href="accept.php?id=<?php echo $orderID ?>"><span class="glyphicon glyphicon-plus"></span> Accept</a> 
-							 <?php
-							 
-							 
-							 
-						 }	
-						 else if($key['payment'] != 0 && $key['confirm'] == 'No' && $key['status'] != 'Paid'){
-							 ?>			 
-							 <a class='btn btn-info btn-xs' href="accept.php?id=<?php echo $orderID ?>"><span class="glyphicon glyphicon-piggy-bank"></span> Accept</a> 
-							 <?php
-						 }
-						 else{
-							 
-							 
-							 
-						 }
-						?>
-						 <input name = "orderID" type = "hidden" value="<?php echo $orderID; ?>">
-						<?php
-						if($key['status'] != 'Paid' ){
-						?>
-						 <button name="accept" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-						 <?php
+					<!-- Technician Offer -->
+					<div id="thistory" class="tab-pane fade in active">
+						<table id="token_table" class="table table-bordered table-striped display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th> Date </th>
+									<th> Post Title </th>
+									<th> Client Name </th>
+									<th> Price Offered (RM) </th>
+									<th> Offer Status </th>
+									<th> Repair Status </th>
+									<th> Payment Status </th>
+									<th> Action </th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php 
+								$offersList = $MySQLi_CON->query($offerQuery);
+								foreach ($offersList as $key) {
+									if ($key['offerStatus'] == "Accepted"){
+										$rowColor = '#A2FFA7';
+									}
+									else if ($key['offerStatus'] == "Declined"){
+										$rowColor = '#FFA2A2';
+									}
+									else{
+										$rowColor = '#FFE3A2';
+									}
+							?>
+								<tr style="background:<?php echo $rowColor ?>">
+									<td><?php echo $key['dateOffered'];?></td> 
+									<td><a href="answer.php?post=<?php echo $key['postId'] ?>"><?php echo $key['postTitle'];?></a></td>
+									<td><a href="expert.php?ids=<?php echo $key['clientId'] ?>"><?php echo $key['clientName'];?></a></td>
+									<td>
+										<?php echo $key['priceOffered'];?> 
+										<!--<button data-toggle="modal" data-target="#squarespaceModal" style="float:right" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-piggy-bank"></span> Change</button> -->
+									</td> 
+									<td><?php echo $key['offerStatus'];?></td> 
+									<td><?php echo $key['repairStatus'];?></td> 
+									<td><?php echo $key['paymentStatus'];?></td> 
+									<td class="text-center">
+										<form method="post" action="cancel.php">
+											<input name = "offerId" type = "hidden" value="<?php echo $key['offerId']; ?>">
+											<?php
+												if ($key['offerStatus'] == 'Accepted' && $key['paymentStatus'] == 'Paid'){
+											?>
+											<button name="complete" class="btn btn-primary btn-xs" onclick="return confirm('Confirmed repair completed?');"><span class="glyphicon glyphicon-ok"></span> Complete</button>
+											<?php
+												}
+												else if ($key['offerStatus'] == 'Accepted' && $key['paymentStatus'] == 'Not Paid'){
+											?>
+											<button name="complete" class="btn btn-primary btn-xs" onclick="return confirm('Confirmed repair completed?');" disabled><span class="glyphicon glyphicon-ok"></span> Complete</button>
+											<?php
+												}
+												else{
+											?>
+											<button name="cancel" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this offer?');"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+											<?php
+												}
+											?>
+										</form>
+									</td>
+								</tr>
+							<?php
+								}
+							?>
+							</tbody>
+						</table>
+					</div>
+					<!--Technician offer History-->
+					<div id="tacc" class="tab-pane fade">
+						<table id="token_table2" class="table table-bordered table-striped display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th> Date offered </th>
+									<th> Date Completed </th>
+									<th> Post Title </th>
+									<th> Client Name </th>
+									<th> Price Offered (RM) </th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+									$historyQuery = "SELECT * FROM offers WHERE technicianId LIKE $loggedInUserId AND offerStatus = 'Accepted' AND repairStatus = 'Completed'";
+									$historyList = $MySQLi_CON->query($historyQuery);
+									foreach ($historyList as $historyRow) {  
+								?>
+								<tr>
+									<td><?php echo $historyRow['dateOffered'];?></td> 
+									<td><?php echo $historyRow['dateCompleted'];?></td> 
+									<td><a href="answer.php?post=<?php echo $historyRow['postId'] ?>"><?php echo $historyRow['postTitle'];?></a></td>
+									<td><a href="expert.php?ids=<?php echo $historyRow['clientId'] ?>"><?php echo $historyRow['clientName'];?></a></td>
+									<td><?php echo $historyRow['priceOffered'];?></td>
+								</tr>
+								<?php
+									}
+								?>
+							</tbody>
+						</table>
+					</div>
+					<?php
 						}
+						//General User Offers
 						else{
-							
+					?>
+					<div id="thistory" class="tab-pane fade in active">
+						<table id="token_table" class="table table-bordered table-striped display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th> Date </th>
+									<th> Post Title </th>
+									<th> Tecnician Name </th>
+									<th> Price Offered (RM) </th>
+									<th> Offer Status </th>
+									<th> Repair Status </th>
+									<th> Payment Status </th>
+									<th> Action </th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php 
+									$offersList = $MySQLi_CON->query($offerQuery);
+									foreach ($offersList as $key) {
+								?>
+								<tr>
+									<td><?php echo $key['dateOffered'];?></td> 
+									<td><a href="answer.php?post=<?php echo $key['postId'] ?>"><?php echo $key['postTitle'];?></a></td>
+									<td>
+										<a href="expert.php?ids=<?php echo $key['technicianId'] ?>">
+										<?php 
+											$techId = $key['technicianId'];
+											$findTechnician = "SELECT * FROM users WHERE userId LIKE $techId";
+											$techResult = $MySQLi_CON->query($findTechnician);
+											foreach ($techResult as $row) {
+												echo $row['userName'];
+											}
+										?>
+										</a>
+									</td>
+									<td><?php echo $key['priceOffered'];?></td> 
+									<td><?php echo $key['offerStatus'];?></td> 
+									<td><?php echo $key['repairStatus'];?></td>
+									<td><?php echo $key['paymentStatus'];?></td> 
+									<td class="text-center">
+										<form method="post" action="cancel.php">
+											<input name = "offerId" type = "hidden" value="<?php echo $key['offerId']; ?>">
+											<input name = "postId" type = "hidden" value="<?php echo $key['postId']; ?>">
+											<input name = "technicianId" type = "hidden" value="<?php echo $key['technicianId']; ?>">
+											<?php
+												if ($key['offerStatus'] == 'Accepted' && $key['paymentStatus'] == 'Not Paid'){
+											?>
+											<a class='btn btn-info btn-xs' href="paypal.php?id=<?php echo $key['offerId'] ?>"><span class="glyphicon glyphicon-piggy-bank"></span> Pay</a>
+											<?php
+												}
+												else if ($key['offerStatus'] == 'Accepted' && $key['paymentStatus'] == 'Paid'){
+											?>
+											<b>Please wait for completion</b>
+											<?php
+												}
+												else{
+											?>
+											<button name="accept" class='btn btn-info btn-xs' onclick="return confirm('Confirm to accept this offer?');"><span class="glyphicon glyphicon-plus"></span> Accept</button>
+											<button name="decline" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to decline this offer?');"><span class="glyphicon glyphicon-remove"></span> Decline</button>
+											<?php
+												}
+											?>
+										</form>
+									</td>									
+								</tr>
+								<?php
+									}
+								?>
+							</tbody>
+						</table>
+					</div>
+					<!-- User History -->
+					<div id="tacc" class="tab-pane fade">
+						<table id="token_table2" class="table table-bordered table-striped display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th> Date offered </th>
+									<th> Date Completed </th>
+									<th> Post Title </th>
+									<th> Technician Name </th>
+									<th> Price Offered (RM) </th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+									$historyQuery = "SELECT * FROM offers WHERE clientId LIKE $loggedInUserId AND offerStatus LIKE 'Accepted' AND repairStatus LIKE 'Completed'";
+									$historyList = $MySQLi_CON->query($historyQuery);
+									foreach ($historyList as $historyRow ) {  
+								?>
+								<tr>
+									<td><?php echo $historyRow['dateOffered'];?></td>
+									<td><?php echo $historyRow['dateCompleted'];?></td> 
+									<td><a href="answer.php?post=<?php echo $historyRow['postId'] ?>"><?php echo $historyRow['postTitle'];?></a></td>
+									<td>
+										<a href="expert.php?ids=<?php echo $historyRow['technicianId'] ?>">
+										<?php 
+											$techId = $historyRow['technicianId'];
+											$findTechnician = "SELECT * FROM users WHERE userId LIKE $techId";
+											$techResult = $MySQLi_CON->query($findTechnician);
+											foreach ($techResult as $row) {
+												echo $row['userName'];
+											}
+										?>
+										</a>
+									</td>
+									<td><?php echo $historyRow['priceOffered'];?></td> 
+								</tr>
+								<?php
+									}
+								?>
+							</tbody>
+						</table>
+					</div>
+					<?php
 						}
-						 ?>
-						 
-						 
-						 
-						 </form>
-						 
-						 
+					?>		  
 					
-
 					
-                </tr>
-                <?php
-                  }
-                  ?>
-           
-	      
-		</tbody>
-                <tfoot>
-                </tfoot>
-              </table>
-	
-	
-	<?php
-
-}
-			  
-	?>		  
-			  
-		  		  
-            </div>
-			<div id="tacc" class="tab-pane fade">
-  <table id="token_table2" class="table table-bordered table-striped display" cellspacing="0" width="100%">
-                <br>
-                <thead>
-               <tr>
-		  
-		   <th> Type </th>
-		   <th> Name </th>
-		   <th> Date </th>
-		   
-		   <th>	Expert </th>
-		   <th>	Status </th>
-		   <th>	Payment </th>
-		   <th>	Action </th>
-		</tr>
-                </thead>
-                <tbody>
-                
-                </tbody>
-                <tfoot>
-                </tfoot>
-              </table>
-            </div>
-			
-			
-			
+				</div>
 			</div>
-            
-              
-            </div>
             <!-- /.box-body -->
           </div>
           
@@ -359,57 +315,43 @@ else{
 
   <!-- the div that represents the modal dialog -->
 
-   <form method="post" action="payAmt.php">
-					 <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="lineModalLabel">Order Amount</h3>
-		</div>
-		
-		<div class="modal-body">
-			
-            <!-- content goes here -->
-			
-              <div class="form-group">
-                <label for="exampleInputEmail1">Product Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="<?php echo $key['name'];?>" disabled />
-              </div>
-                <div class="form-group">
-                <label for="exampleInputEmail1">Product Problem</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="<?php echo $key['problem'];?>" disabled />
-              </div>
-                <div class="form-group">
-                <label for="exampleInputEmail1">Client Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="<?php echo $userKey['user_Name'];?>" disabled />
-              </div>
-                <div class="form-group">
-                <label for="exampleInputEmail1">Price</label>
-                <input type="text" name ="price" class="form-control" id="exampleInputEmail1" placeholder="Enter the service amount" required />
-              </div>
-			   <input name = "orderID" type = "hidden" value="<?php echo $key['order_ID']; ?>">
-		</div>
-		<div class="modal-footer">
-			<div class="btn-group btn-group-justified" role="group" aria-label="group button">
-				<div class="btn-group" role="group">
-				<button  type="submit" name="submit" class="btn btn-default btn-hover-green"> Save</button>
-				
+	<form method="post" action="payAmt.php">
+		<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title" id="lineModalLabel">Order Amount</h3>
+					</div>
+					<div class="modal-body">
+						<!-- content goes here -->
+						<div class="form-group">
+							<label for="exampleInputEmail1">Current Price Offered</label>
+							<input type="text" class="form-control" id="exampleInputEmail1" placeholder="<?php echo $key['priceOffered'];?>" disabled />
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail1">New Price</label>
+							<input type="text" name ="price" class="form-control" id="exampleInputEmail1" placeholder="Enter new price" required />
+						</div>
+						<input name = "offerId" type = "hidden" value="<?php echo $key['offerId']; ?>">
+					</div>
+					<div class="modal-footer">
+						<div class="btn-group btn-group-justified" role="group" aria-label="group button">
+							<div class="btn-group" role="group">
+								<button  type="submit" name="submit" class="btn btn-default btn-hover-green"> Save</button>
+							</div>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+							</div>
+							<div class="btn-group btn-delete hidden" role="group">
+								<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
-				</div>
-				<div class="btn-group btn-delete hidden" role="group">
-					<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
-				</div>
-			
 			</div>
 		</div>
-		   
-	</div>
-  </div>
-</div>
- </form>
+	</form>
   
   
   <!-- /.control-sidebar -->
