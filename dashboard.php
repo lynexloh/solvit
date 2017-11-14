@@ -64,14 +64,14 @@
 			</div>
 			<!-- ./col -->
 		
-			<div class="col-lg-7 col-xs-12">
+			<div class="col-lg-12 col-xs-12">
 				<div class="box">
 					<div class="box-header">
 						<h3 class="box-title">News and Events</h3>
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<div class="demo" data-htmlfromrss="https://www.wired.com/category/gear/feed/"></div>
+						<div class="demo" data-htmlfromrss="http://feeds.feedburner.com/TechCrunch/"></div>
 					</div>
 					<!-- /.box-body -->
 				</div>

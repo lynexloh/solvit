@@ -44,15 +44,23 @@ CREATE TABLE `comments` (
 CREATE TABLE `offers` (
   `offerId` int(11) NOT NULL,
   `dateOffered` datetime NOT NULL,
+  `dateCompleted` datetime,
   `priceOffered` decimal(10,2) NOT NULL,
-  `userId` int(11),
+  `postTitle` varchar(256) NOT NULL,
+  `clientName` varchar(256) NOT NULL,
+  `offerStatus` varchar(256) NOT NULL,
+  `repairStatus` varchar(256) NOT NULL,
+  `paymentStatus` varchar(256) NOT NULL,
+  `clientId` int(11),
+  `technicianId` int(11),
   `postId` int(11),
   PRIMARY KEY (offerId)
 );
 
 CREATE TABLE `transactions` (
   `transactionId` int(11) NOT NULL,
-  `amountPaid` varchar(255) NOT NULL,
+  `transactionDate` datetime,
+  `amountPaid` decimal(10,2) NOT NULL,
   `userId` int(11),
   `offerId` int(11),
   PRIMARY KEY (transactionId)

@@ -33,6 +33,8 @@
 	<div class="main">
 		<div class="form">
 			<h2>SolvIT</h2>
+			<p style="color:#fff;text-align:center"> Welcome to solvIT<br//>
+			We solve IT related problem via online or on-site</p>
 			<form action="login.php" method="post" class="login-form">
 				<div id="inner">
 					<img src="images/download.png"/>
@@ -43,7 +45,7 @@
 				</div>
 				<div class="submit">
 					<input name="submit" type="submit" value="Login">
-					<h3>Not registered?<span class="term"><a href="register.php">Create an account</a></span></h3>
+					<h3>Not registered?<span class="term"> <a href="register.php">Create an account</a></span></h3>
 				</div>
 				<div class="clear"></div>
 			</form>

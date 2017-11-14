@@ -11,16 +11,19 @@ if(isset($_POST['submit'])){
 			$records->execute();
 			$value = $records->fetch(PDO::FETCH_ASSOC);
 			if(count($value) > 0 && password_verify($upass, $value['password']) ){
-				$_SESSION['checkLogin'] = '1';
+				
 				$_SESSION['userId'] = $value['userId'];
 	            $_SESSION['userEmail'] = $value['email'];
 	            $_SESSION['userPass'] = $value['password'];
 				$_SESSION['userName'] = $value['userName'];
+				$_SESSION['userType'] = $value['userType'];
 				$_SESSION['userOcc'] = $value['occupation'];
 				$_SESSION['userBirth'] = $value['dateOfBirth'];
 				$_SESSION['userMob'] = $value['contactNumber'];
 				$_SESSION['userEx'] = $value['experience'];
 				$status = "Online";
+				
+				$_SESSION['checkLogin'] = '1';
 				$id = $_SESSION['userId'];
 				
 				$sql = "UPDATE users SET userStatus=:status WHERE userId=:id";

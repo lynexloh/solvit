@@ -133,9 +133,9 @@
 		<div class="row">
         <div class="wrap">
           <div class="right-menu">
-            <a  class="active" href="#profile" id="line-bottom"><i class="fa fa-user active-profile"></i><span id="active-profile">Profile</span></a>
-            <a href="#project" id="line-bottom"><i class="ionicons ion-edit project-edit"></i><span id="project-edit">Edit</span></a>
-            <a href="#skills"><i class="glyphicon glyphicon-log-in skill-password"></i><span id="skill-password">Personal</span></a>
+            <a  class="active" href="#profile" id="line-bottom"><i class="fa fa-user active-profile"></i><span id="active-profile">User Info</span></a>
+            <a href="#project" id="line-bottom"><i class="ionicons ion-edit project-edit"></i><span id="project-edit">Profile</span></a>
+            <a href="#skills"><i class="glyphicon glyphicon-log-in skill-password"></i><span id="skill-password">Account</span></a>
           </div>
           <div class="fade in active">
             <div class="content">
@@ -162,7 +162,7 @@
                       </div>
             
               <div class="form-group has-feedback">
-                 <input type="text" class="form-control" placeholder="Date of Birth" value='<?php echo $dob1; ?>' name="dob">
+                 <input type="date" class="form-control" placeholder="Date of Birth" value='<?php echo $dob1; ?>' name="dob">
 	         <span class="fa fa-calendar form-control-feedback"></span>
               </div>
                       <div class="form-group has-feedback">

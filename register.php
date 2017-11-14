@@ -44,9 +44,9 @@ body {
 		   <div class="lable-2">
 		  
 				<input type="text" name="name" class="text" placeholder="Name" id="name" required/>
-		        <input name="email" id="email" type="text" class="text" placeholder="your@email.com" required/>
-		        <input type="password" id="password"  name="password" class="text" placeholder="Password" required/>
-				<input type="password" id="password2" name="password2" class="text" placeholder="Password" required/>
+		        <input name="email" id="email" type="text" class="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="your@email.com" required/>
+		        <input type="password" id="password"  name="password" class="text" placeholder="Password" pattern=".{6,}" required/>
+				<input type="password" id="password2" name="password2" class="text" placeholder="Confirm Password" pattern=".{6,}" required/>
 
 		   </div>
 		   <h3>By creating an account, you agree to our <span class="term"><a href="#">Terms & Conditions</a></span></h3>

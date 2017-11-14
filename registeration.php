@@ -22,11 +22,11 @@ if(isset($_POST['submit'])){
 			echo '<script language = "javascript">';
 			echo 'alert("This email has already exist")';
 			echo '</script>';
-			echo  "<script> window.location.assign('index.php'); </script>";
+			echo  "<script> window.location.assign('register.php'); </script>";
 		}
 		else{
 			if($upass == $upass2){
-				$stmt = "INSERT INTO users (userName, email, password,userType,dateCreated) VALUES (:name,:email,:password,:type,:date);";
+				$stmt = "INSERT INTO users (userName, email, password,userType,userStatus,pointsCollected,dateCreated) VALUES (:name,:email,:password,:type,'Offline', 0,:date);";
 				$p = $MySQLi_CON -> prepare($stmt);		
 				$results = $p -> execute(array(
 					":name" => $name,
@@ -36,21 +36,21 @@ if(isset($_POST['submit'])){
 					":password" => $pass,
 				));
 				echo '<script language = "javascript">';
-				echo 'alert("Register successfully")';
+				echo 'alert("Register successfully. Please proceed to login.")';
 				echo '</script>';
 				echo  "<script> window.location.assign('index.php'); </script>";
 				if(!$results){
 					echo '<script language = "javascript">';
 					echo 'alert("Fail to register")';
 					echo '</script>';
-					echo  "<script> window.location.assign('index.php'); </script>";
+					echo  "<script> window.location.assign('register.php'); </script>";
 				}
 			}
 			else{
 				echo '<script language = "javascript">';
 				echo 'alert("The passwords are not the same")';
 				echo '</script>';
-				echo  "<script> window.location.assign('index.php'); </script>";	
+				echo  "<script> window.location.assign('register.php'); </script>";	
 			}
 		}
 	}
@@ -58,7 +58,7 @@ if(isset($_POST['submit'])){
 		echo '<script language = "javascript">';
 		echo 'alert("Please fill all the field.")';
 		echo '</script>';
-		echo  "<script> window.location.assign('index.php'); </script>";
+		echo  "<script> window.location.assign('register.php'); </script>";
     }   
 }
 ?>

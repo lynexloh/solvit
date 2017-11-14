@@ -2,6 +2,19 @@
 	error_reporting(0);
 	session_start();
 	include_once 'connection.php';
+	
+	$sql = "SELECT count(*) FROM users"; 
+	$result = $MySQLi_CON->prepare($sql); 
+	$result->execute(); 
+	$number = $result->fetchColumn(); 
+	
+	$sql1 = "SELECT count(*) FROM posts"; 
+	$result1 = $MySQLi_CON->prepare($sql1); 
+	$result1->execute(); 
+	$post = $result1->fetchColumn(); 	
+	
+	include_once 'dbController.php';
+	$db_handle = new DBController();
 	if ($_SESSION['checkLogin'] != '1') {
 		echo '<script language = "javascript">';
 		echo 'alert("You have to login first.")';
@@ -9,11 +22,10 @@
 		echo  "<script> window.location.assign('index.php'); </script>";
 		exit;
 	}
-	$id = $_SESSION['userId'];
-	$stmt3 = $MySQLi_CON->prepare("SELECT * from users WHERE userId LIKE $id"); 
-	$stmt3->execute(); 
-	$result3 = $stmt3->fetchAll();
-	foreach( $result3 as $row ) {
+		  
+	$id = $_SESSION['userId'];				 
+	$stmt3 =  $db_handle->runQuery("SELECT * from users WHERE userId LIKE $id"); 
+	foreach( $stmt3 as $row ) {
     	$name= $row["userName"];
 		$email = $row["email"];
 		$birthdate= $row["dateOfBirth"];
@@ -24,15 +36,6 @@
 		$type= $row["userType"];
 		$status= $row["userStatus"];
 	}
-	$sql = "SELECT count(*) FROM users"; 
-	$result = $MySQLi_CON->prepare($sql); 
-	$result->execute(); 
-	$number = $result->fetchColumn(); 
-	
-	$sql1 = "SELECT count(*) FROM posts"; 
-	$result1 = $MySQLi_CON->prepare($sql1); 
-	$result1->execute(); 
-	$post = $result1->fetchColumn(); 	
 
 ?>
 <!DOCTYPE html>
@@ -54,7 +57,7 @@
 	<!-- Theme style -->
 	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
 	<link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-	<link type="text/css" rel="stylesheet" href="css/htmlfromrss.css" />
+	<link href="css/htmlfromrss.css" rel="stylesheet" type="text/css" />
   
 	<!-- bootstrap wysihtml5 - text editor -->
 	<link rel="stylesheet" href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
@@ -249,6 +252,10 @@
 			box-shadow:0 0 0 1px #9a00cd inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 1px 3px 1px rgba(0,0,0,0.3);
 			background-color: #bb39d7;
 		}
+		
+		.post div{
+			height:15px;
+		}
 	</style>
 </head>
 
@@ -324,17 +331,16 @@
 					<a href="#"><i class="fa fa-circle text-success"></i> <?php echo $status?></a>
 				</div>
 			</div>
-			<!--
-			  <div class="sidebar-form">
-			  <input type="text" name="q" class="form-control" id="search" placeholder="Search For User">
-			  </div>
-		-->
-			<div class ="side">
-				<input type="text" class="form-control" id="search" placeholder="Search for a user" autocomplete="off">
-				<!-- Show Results -->
-				<!--<h4 id="results-text">Showing results for: <b id="search-string">Array</b></h4>-->
-				<ul id="results"></ul>
-			</div>
+			<!-- search form (Optional) -->
+			<form action="search.php" method="post" class="sidebar-form">
+				<div class="input-group">
+					<input type="text" name="searchWord" class="form-control" placeholder="Search For User">
+					<span class="input-group-btn">
+						<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+			</form>
 			<!-- /.search form -->
 			<?php 
 				if($type=="User" || $type =="Technician"){
